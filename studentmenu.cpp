@@ -148,7 +148,6 @@ void StudentMenu::addCourse() {
         return;
     }
 
-    // Display course code, name, faculty, day, and time in the combo box
     QStringList items;
     for (const auto& sc : courses)
         items << QString("%1 - %2 | %3 | %4 %5-%6")
@@ -166,7 +165,6 @@ void StudentMenu::addCourse() {
     int idx = items.indexOf(selected);
     const auto& sc = courses[idx];
 
-    // Show class date and time before asking to enroll
     QString info = QString("Class Timing:\nDay: %1\nStart: %2\nEnd: %3")
                        .arg(QString::fromStdString(sc.day))
                        .arg(QString::fromStdString(sc.start_time))
@@ -215,7 +213,7 @@ void StudentMenu::viewTimetable() {
         QMessageBox::information(this, "Timetable", "No enrolled courses.");
         return;
     }
-    QString table = "Course | Name | Day | Start-End | Room | Bldg | Teacher\n"; // Header
+    QString table = "Course | Name | Day | Start-End | Room | Bldg | Teacher\n"; 
     for (const auto& t : tt) {
         table += QString("%1 | %2 | %3 | %4-%5 | %6 %7 | %8\n")
         .arg(QString::fromStdString(t.course_code))
@@ -304,8 +302,6 @@ void StudentMenu::changePassword() {
     }
 }
 
-// ... (rest unchanged until after changePassword)
-
 void StudentMenu::viewMarks() {
     auto courses = db->getStudentCourses(studentId.toStdString());
     if (courses.empty()) {
@@ -324,7 +320,6 @@ void StudentMenu::viewMarks() {
         return;
     }
 
-    // Build HTML table
     QString table = "<table border='1' cellspacing='0' cellpadding='3'><tr><th>Assignment</th><th>Marks</th><th>Percentage</th></tr>";
     for (const auto& mark : marks) {
         double percent = (mark.total_marks > 0) ? (100.0 * mark.obtained_marks / mark.total_marks) : 0.0;
