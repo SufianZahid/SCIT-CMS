@@ -49,7 +49,6 @@ FacultyMenu::FacultyMenu(Database *db, QString facultyId, QString facultyName, Q
         manageMarksBtn, viewTotalEnrolledBtn, changePasswordBtn, logoutBtn
     };
 
-    // Pill-shaped, translucent, centered, equal-sized buttons
     QString btnStyle = R"(
         QPushButton {
             background-color: rgba(32, 71, 245, 200);
@@ -73,13 +72,11 @@ FacultyMenu::FacultyMenu(Database *db, QString facultyId, QString facultyName, Q
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     }
 
-    // Main layout
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(20, 80, 20, 40); // More space above and below
+    mainLayout->setContentsMargins(20, 80, 20, 40); 
     mainLayout->addWidget(titleLabel, 0, Qt::AlignHCenter);
-    mainLayout->addSpacing(45); // More space below the title
+    mainLayout->addSpacing(45);
 
-    // Centered button layout
     QVBoxLayout* btnLayout = new QVBoxLayout();
     btnLayout->setAlignment(Qt::AlignHCenter);
 
@@ -89,13 +86,12 @@ FacultyMenu::FacultyMenu(Database *db, QString facultyId, QString facultyName, Q
 
     for (int i = 0; i < numButtons; ++i) {
         btnLayout->addWidget(buttons[i], 0, Qt::AlignHCenter);
-        if (i == numButtons - 2) // before logout
+        if (i == numButtons - 2) 
             btnLayout->addSpacing(extraGap);
         else if (i != numButtons - 1)
             btnLayout->addSpacing(normalGap);
     }
 
-    // Add stretch above and below to keep buttons vertically centered
     mainLayout->addStretch(1);
     mainLayout->addLayout(btnLayout);
     mainLayout->addStretch(2);
@@ -119,7 +115,6 @@ void FacultyMenu::paintEvent(QPaintEvent *event)
     QWidget::paintEvent(event);
 }
 
-// ... rest of your FacultyMenu code unchanged ...
 
 void FacultyMenu::viewEnrolledStudents() {
     auto courses = db->getFacultyCourses(facultyId.toInt());
@@ -214,11 +209,10 @@ void FacultyMenu::manageMarks() {
             QMessageBox::information(this, "Add Marks", "No students enrolled in this course.");
             return;
         }
-        // Filter students without marks for this assignment
         auto existing = db->getStudentMarksForAssignment(course_code, assignment.toStdString());
         QSet<QString> marked;
         for (const auto& mark : existing) marked.insert(QString::fromStdString(mark.first));
-        QList<QPair<QString, QString>> studentList; // (student_id, name)
+        QList<QPair<QString, QString>> studentList; 
         for (const auto& student : students) {
             if (marked.contains(QString::fromStdString(student.student_id))) continue;
             studentList.append(qMakePair(QString::fromStdString(student.student_id), QString::fromStdString(student.first_name + " " + student.last_name)));
