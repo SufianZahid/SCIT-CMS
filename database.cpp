@@ -30,7 +30,7 @@ catch (const mysqlx::Error& err) {
 Database::~Database() {
     try { session.close(); } catch (...) {}
 }
-
+//
 bool Database::studentExists(const std::string& studentId) {
     auto students = db.getTable("students");
     auto res = students.select("COUNT(*)").where("student_id = :sid").bind("sid", studentId).execute();
