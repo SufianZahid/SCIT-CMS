@@ -19,7 +19,6 @@ public:
     Database(const std::string& host, const std::string& user, const std::string& pass, const std::string& dbname);
     ~Database();
 
-    // Student
     bool studentExists(const std::string& studentId);
     bool validateStudentPassword(const std::string& studentId, const std::string& password);
     bool changeStudentPassword(const std::string& studentId, const std::string& newPassword);
@@ -28,7 +27,6 @@ public:
     int getStudentSemester(const std::string& studentId);
     std::string getStudentDegree(const std::string& studentId);
 
-    // Faculty
     bool facultyExists(const std::string& email);
     bool validateFacultyPassword(const std::string& email, const std::string& password);
     std::string getFacultyId(const std::string& email);
@@ -36,7 +34,6 @@ public:
     bool changeFacultyPassword(const std::string& email, const std::string& newPassword);
     bool resetFacultyPassword(const std::string& email);
 
-    // Courses and Enrollment
     std::vector<ScheduledCourse> getAvailableScheduledCourses(int semester, const std::string& degree);
     bool isAlreadyEnrolled(const std::string& studentId, int schedule_id);
     bool hasClash(const std::string& studentId, int timeslot_id);
@@ -44,10 +41,8 @@ public:
     bool dropEnrollment(const std::string& studentId, int schedule_id);
     std::vector<ScheduledCourse> getEnrolledCourses(const std::string& studentId);
 
-    // Admin password
     bool isAdminPasswordCorrect(const std::string& password);
 
-    // Add/remove entities
     void addStudent(const std::string& id, const std::string& fname, const std::string& lname, const std::string& email, const std::string& degree, int semester);
     void removeStudent(const std::string& id);
     void addFaculty(int faculty_id, const std::string& fname, const std::string& lname, const std::string& email, const std::string& degree, const std::string& qualification, const std::string& expertise_sub, const std::string& designation);
@@ -60,7 +55,6 @@ public:
     void addTimeslot(const std::string& day, const std::string& start, const std::string& end);
     void removeTimeslot(int timeslot_id);
 
-    // Scheduling
     std::vector<std::pair<std::string, std::string>> getUnscheduledCourses();
     std::vector<std::pair<int, std::string>> getAllTimeslots();
     std::vector<std::pair<std::string, std::string>> getAvailableRooms(int timeslot_id);
@@ -73,7 +67,6 @@ public:
     std::vector<ScheduledAssignment> getAllCourseSchedules();
     void removeCourseSchedule(int schedule_id);
 
-    // Faculty GUI needs:
     std::vector<std::string> getFacultyCourses(int facultyId);
     struct StudentInfo {
         std::string student_id;
@@ -87,13 +80,11 @@ public:
     std::vector<ScheduledCourse> getFacultyTimetable(int facultyId);
     int getTotalEnrolledStudents(const std::string& course_code);
 
-    // Marks
     void addMarks(const std::string& course_code, const std::string& student_id, const std::string& assignment_name, int total_marks, int obtained_marks);
     void updateMarks(const std::string& course_code, const std::string& student_id, const std::string& assignment_name, int obtained_marks);
     std::vector<std::string> getAssignmentsForCourse(const std::string& course_code);
     std::vector<std::pair<std::string, std::pair<int, int>>> getStudentMarksForAssignment(const std::string& course_code, const std::string& assignment_name);
 
-    // Student marks viewing
     struct Mark {
         std::string assignment_name;
         int total_marks;
