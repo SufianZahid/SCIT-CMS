@@ -31,7 +31,6 @@ Database::~Database() {
     try { session.close(); } catch (...) {}
 }
 
-// --- Student ---
 bool Database::studentExists(const std::string& studentId) {
     auto students = db.getTable("students");
     auto res = students.select("COUNT(*)").where("student_id = :sid").bind("sid", studentId).execute();
@@ -65,7 +64,6 @@ std::string Database::getStudentDegree(const std::string& studentId) {
     return row ? std::string(row[0].get<std::string>()) : "";
 }
 
-// --- Faculty ---
 bool Database::facultyExists(const std::string& email) {
     auto faculty = db.getTable("faculty");
     auto res = faculty.select("COUNT(*)").where("email = :email").bind("email", email).execute();
@@ -99,7 +97,6 @@ bool Database::resetFacultyPassword(const std::string& email) {
     return changeFacultyPassword(email, "faculty_scit");
 }
 
-// --- Course/Enrollment ---
 std::vector<ScheduledCourse> Database::getAvailableScheduledCourses(int semester, const std::string& degree) {
     std::vector<ScheduledCourse> result;
     std::string query =
@@ -230,7 +227,6 @@ bool Database::isAdminPasswordCorrect(const std::string& password) {
     return password == "admin123";
 }
 
-// --- Add/Remove ---
 void Database::addStudent(const std::string& id, const std::string& fname, const std::string& lname, const std::string& email, const std::string& degree, int semester) {
     auto students = db.getTable("students");
     students.insert("student_id", "first_name", "last_name", "email", "degree", "semester", "password")
@@ -282,7 +278,6 @@ void Database::removeTimeslot(int timeslot_id) {
     timeslots.remove().where("timeslot_id = :tid").bind("tid", timeslot_id).execute();
 }
 
-// --- Scheduling ---
 std::vector<std::pair<std::string, std::string>> Database::getUnscheduledCourses() {
     std::vector<std::pair<std::string, std::string>> resvec;
     std::string query =
@@ -367,7 +362,6 @@ void Database::removeCourseSchedule(int schedule_id) {
     }
 }
 
-// --- Faculty GUI ---
 std::vector<std::string> Database::getFacultyCourses(int facultyId) {
     std::vector<std::string> result;
     std::string query =
@@ -450,7 +444,6 @@ int Database::getTotalEnrolledStudents(const std::string& course_code) {
     return row ? row[0].get<int>() : 0;
 }
 
-// --- Marks ---
 void Database::addMarks(const std::string& course_code, const std::string& student_id, const std::string& assignment_name, int total_marks, int obtained_marks) {
     try {
         std::string query = "INSERT INTO marks (course_code, student_id, assignment_name, total_marks, obtained_marks) VALUES (?, ?, ?, ?, ?) "
@@ -491,7 +484,6 @@ std::vector<std::pair<std::string, std::pair<int, int>>> Database::getStudentMar
     return marks;
 }
 
-// --- Student marks viewing ---
 std::vector<Database::Mark> Database::getStudentMarks(const std::string& student_id, const std::string& course_code) {
     std::vector<Mark> result;
     std::string query =
